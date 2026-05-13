@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qalb — Daily Reflection</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <span class="nav-arabic">قلب</span>
+      <span class="nav-title">Qalb</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-btn active" data-page="reflect" onclick="showPage('reflect')">Reflect</button>
+      <button class="nav-btn" data-page="settings" onclick="showPage('settings')">About</button>
+    </div>
+  </nav>
+
+  <!-- Reflect Page -->
+  <main id="page-reflect" class="page active">
+    <div class="page-inner">
+      <div class="date-line" id="date-display"></div>
+      <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+
+      <div class="prompt-card" id="prompt-card" style="display:none">
+        <div class="prompt-card-header">
+          <div class="prompt-label">Today's prompt</div>
+          <button class="prompt-dismiss" onclick="hidePrompt()" aria-label="Dismiss prompt">✕</button>
+        </div>
+        <p class="prompt-text" id="prompt-text"></p>
+        <button class="btn-link" onclick="newPrompt()">Try another</button>
+      </div>
+
+      <div class="prompt-toggle-row" id="prompt-toggle-row">
+        <button class="btn-prompt-suggest" id="prompt-toggle-btn" onclick="togglePrompt()">
+          <span class="prompt-toggle-icon">✦</span> Suggest a prompt
+        </button>
+      </div>
+
+      <div class="write-area">
+        <textarea
+          id="reflection-input"
+          placeholder="Begin when you are ready…"
+          rows="8"
+          oninput="saveReflection()"
+        ></textarea>
+        <div class="word-count" id="word-count">0 words</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" onclick="saveAndFinish()">Save reflection</button>
+      </div>
+
+      <div class="saved-notice" id="saved-notice">Saved ✓</div>
+
+      <div class="ayah-strip">
+        <p class="ayah-text" id="ayah-text"></p>
+        <p class="ayah-ref" id="ayah-ref"></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Settings / About Page -->
+  <main id="page-settings" class="page">
+    <div class="page-inner settings-inner">
+      <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+
+      <h1 class="settings-title">About Qalb</h1>
+
+      <div class="about-card">
+        <p>
+          <em>Qalb</em> (قلب) means <em>heart</em> in Arabic — the seat of intention,
+          feeling, and consciousness in the Islamic tradition.
+        </p>
+        <p>
+          This space is a quiet corner for your daily <em>murāqabah</em> — a moment
+          of gentle self-observation and remembrance. Each day a new prompt invites
+          you to write honestly: about your intentions, your gratitude, your struggles,
+          and your hopes.
+        </p>
+        <p>
+          There are no targets, no streaks, no pressure. Only you, your words,
+          and your Lord.
+        </p>
+        <p class="hadith-quote">
+          "Verily, actions are by intentions."
+          <span class="hadith-ref">— Sahih al-Bukhari</span>
+        </p>
+      </div>
+
+      <div class="settings-section">
+        <h2 class="settings-section-title">Your data</h2>
+        <p class="settings-note">
+          All reflections are saved privately on this device only. Nothing is sent
+          anywhere. Your words are yours.
+        </p>
+        <button class="btn-danger" onclick="clearAllData()">Clear all reflections</button>
+      </div>
+
+      <div class="settings-section coming-soon-block">
+        <div class="coming-soon-header">
+          <h2 class="settings-section-title">Daily reminder</h2>
+          <span class="coming-soon-badge">Coming soon</span>
+        </div>
+        <p class="settings-note">
+          A gentle nudge at a time you choose — so your reflection becomes a quiet daily ritual.
+          The more people who register interest, the sooner this arrives.
+        </p>
+        <div id="reminder-form" class="reminder-interest-form">
+          <input
+            type="email"
+            id="reminder-email"
+            class="email-input"
+            placeholder="your@email.com"
+            autocomplete="email"
+          />
+          <button class="btn-interest" onclick="registerInterest()">Notify me</button>
+        </div>
+        <p class="registered-confirm" id="registered-confirm" style="display:none">
+          Thank you — we'll be in touch when reminders are ready. ✦
+        </p>
+      </div>
+
+      <footer class="powered-by">
+        <span>Powered by</span>
+        <a href="https://amanahdigital.co.uk" target="_blank" rel="noopener noreferrer" class="amanah-link">AmanahDigital</a>
+      </footer>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
