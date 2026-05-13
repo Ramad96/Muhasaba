@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qalb — Daily Reflection</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Apply saved theme before paint to avoid flash -->
+  <script>(function(){var t=localStorage.getItem('qalb_theme')||'device';document.documentElement.dataset.theme=t;}());</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
   <!-- Navigation -->
@@ -18,7 +20,7 @@
     </div>
     <div class="nav-links">
       <button class="nav-btn active" data-page="reflect" onclick="showPage('reflect')">Reflect</button>
-      <button class="nav-btn" data-page="settings" onclick="showPage('settings')">About</button>
+      <button class="nav-btn" data-page="settings" onclick="showPage('settings')">Settings</button>
     </div>
   </nav>
 
@@ -92,6 +94,25 @@
           "Verily, actions are by intentions."
           <span class="hadith-ref">— Sahih al-Bukhari</span>
         </p>
+      </div>
+
+      <div class="settings-section">
+        <h2 class="settings-section-title">Appearance</h2>
+        <p class="settings-note">Choose how Qalb looks on your device.</p>
+        <div class="theme-selector">
+          <button class="theme-btn" data-theme-btn="light" onclick="setTheme('light')">
+            <span class="theme-icon">☀</span>
+            Light
+          </button>
+          <button class="theme-btn" data-theme-btn="dark" onclick="setTheme('dark')">
+            <span class="theme-icon">☾</span>
+            Dark
+          </button>
+          <button class="theme-btn" data-theme-btn="device" onclick="setTheme('device')">
+            <span class="theme-icon">◐</span>
+            Device
+          </button>
+        </div>
       </div>
 
       <div class="settings-section">

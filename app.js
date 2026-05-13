@@ -53,6 +53,7 @@ let saveTimer = null;
 
 /* === Init === */
 document.addEventListener('DOMContentLoaded', () => {
+  loadTheme();
   renderDate();
   renderPrompt();
   renderAyah();
@@ -164,6 +165,25 @@ function flashSaved() {
 function saveAndFinish() {
   saveReflection();
   flashSaved();
+}
+
+/* === Theme === */
+function loadTheme() {
+  const saved = localStorage.getItem('qalb_theme') || 'device';
+  document.documentElement.dataset.theme = saved;
+  updateThemeButtons(saved);
+}
+
+function setTheme(theme) {
+  localStorage.setItem('qalb_theme', theme);
+  document.documentElement.dataset.theme = theme;
+  updateThemeButtons(theme);
+}
+
+function updateThemeButtons(theme) {
+  document.querySelectorAll('[data-theme-btn]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.themeBtn === theme);
+  });
 }
 
 /* === Settings === */
