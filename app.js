@@ -53,16 +53,52 @@ let saveTimer = null;
 
 /* === Init === */
 document.addEventListener('DOMContentLoaded', () => {
+  loadTheme();
   renderDate();
   renderPrompt();
   renderAyah();
   loadReflection();
   loadReminder();
-  // Restore prompt visibility if user had it open today
-  if (localStorage.getItem('qalb_prompt_open_' + getTodayKey()) === '1') {
+  if (localStorage.getItem('muhasabah_prompt_open_' + getTodayKey()) === '1') {
     showPrompt();
   }
 });
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function setTheme(pref) {
+  localStorage.setItem('muhasabah_theme', pref);
+  applyTheme(pref);
+  updateThemePicker(pref);
+}
+
+function applyTheme(pref) {
+  const root = document.documentElement;
+  const resolved = pref === 'device'
+    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    : pref;
+  root.setAttribute('data-theme', resolved);
+  root.setAttribute('data-theme-pref', pref);
+}
+
+function updateThemePicker(pref) {
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.themeOpt === pref);
+  });
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem('muhasabah_theme') || 'device';
+  applyTheme(saved);
+  updateThemePicker(saved);
+  // Respond to OS theme changes when in device mode
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if ((localStorage.getItem('muhasabah_theme') || 'device') === 'device') {
+      applyTheme('device');
+    }
+  });
+}
 
 /* === Navigation === */
 function showPage(name) {
@@ -86,8 +122,7 @@ function renderDate() {
 
 /* === Prompt === */
 function getDailyPromptIndex() {
-  // Seed by date so the same day always gets the same prompt (until user cycles)
-  const stored = localStorage.getItem('qalb_prompt_' + getTodayKey());
+  const stored = localStorage.getItem('muhasabah_prompt_' + getTodayKey());
   if (stored !== null) return parseInt(stored, 10);
   const seed = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   return parseInt(seed, 10) % PROMPTS.length;
@@ -99,15 +134,14 @@ function renderPrompt() {
 
 function showPrompt() {
   document.getElementById('prompt-card').style.display = 'block';
-  document.getElementById('prompt-toggle-btn').textContent = '';
   document.getElementById('prompt-toggle-btn').innerHTML = '<span class="prompt-toggle-icon">✦</span> Hide prompt';
-  localStorage.setItem('qalb_prompt_open_' + todayKey, '1');
+  localStorage.setItem('muhasabah_prompt_open_' + todayKey, '1');
 }
 
 function hidePrompt() {
   document.getElementById('prompt-card').style.display = 'none';
   document.getElementById('prompt-toggle-btn').innerHTML = '<span class="prompt-toggle-icon">✦</span> Suggest a prompt';
-  localStorage.removeItem('qalb_prompt_open_' + todayKey);
+  localStorage.removeItem('muhasabah_prompt_open_' + todayKey);
 }
 
 function togglePrompt() {
@@ -121,7 +155,7 @@ function togglePrompt() {
 
 function newPrompt() {
   currentPromptIndex = (currentPromptIndex + 1) % PROMPTS.length;
-  localStorage.setItem('qalb_prompt_' + todayKey, currentPromptIndex);
+  localStorage.setItem('muhasabah_prompt_' + todayKey, currentPromptIndex);
   document.getElementById('prompt-text').textContent = PROMPTS[currentPromptIndex];
 }
 
@@ -135,7 +169,7 @@ function renderAyah() {
 
 /* === Reflection === */
 function loadReflection() {
-  const saved = localStorage.getItem('qalb_reflection_' + todayKey) || '';
+  const saved = localStorage.getItem('muhasabah_reflection_' + todayKey) || '';
   const ta = document.getElementById('reflection-input');
   ta.value = saved;
   updateWordCount(saved);
@@ -143,9 +177,8 @@ function loadReflection() {
 
 function saveReflection() {
   const text = document.getElementById('reflection-input').value;
-  localStorage.setItem('qalb_reflection_' + todayKey, text);
+  localStorage.setItem('muhasabah_reflection_' + todayKey, text);
   updateWordCount(text);
-  // Debounce the visible "Saved" flash
   clearTimeout(saveTimer);
   saveTimer = setTimeout(flashSaved, 800);
 }
@@ -173,13 +206,13 @@ function registerInterest() {
     document.getElementById('reminder-email').focus();
     return;
   }
-  localStorage.setItem('qalb_reminder_interest', email);
+  localStorage.setItem('muhasabah_reminder_interest', email);
   document.getElementById('reminder-form').style.display = 'none';
   document.getElementById('registered-confirm').style.display = 'block';
 }
 
 function loadReminder() {
-  if (localStorage.getItem('qalb_reminder_interest')) {
+  if (localStorage.getItem('muhasabah_reminder_interest')) {
     document.getElementById('reminder-form').style.display = 'none';
     document.getElementById('registered-confirm').style.display = 'block';
   }
@@ -191,7 +224,7 @@ function clearAllData() {
   );
   if (!confirmed) return;
   Object.keys(localStorage).forEach(k => {
-    if (k.startsWith('qalb_')) localStorage.removeItem(k);
+    if (k.startsWith('muhasabah_')) localStorage.removeItem(k);
   });
   loadReflection();
   alert('All reflections cleared.');

@@ -1,24 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Qalb — Daily Reflection</title>
+  <title>Muhasabah — Daily Reflection</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- Apply theme before first paint to avoid flash -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('muhasabah_theme') || 'device';
+      var resolved = t === 'device'
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : t;
+      document.documentElement.setAttribute('data-theme', resolved);
+      document.documentElement.setAttribute('data-theme-pref', t);
+    })();
+  </script>
 </head>
 <body>
-  <!-- Navigation -->
+
+  <!-- Navigation — sticky, visible on every page -->
   <nav class="nav">
-    <div class="nav-brand">
-      <span class="nav-arabic">قلب</span>
-      <span class="nav-title">Qalb</span>
-    </div>
+    <button class="nav-brand" onclick="showPage('reflect')" aria-label="Go to Reflect">
+      <span class="nav-arabic">محاسبة</span>
+      <span class="nav-title">Muhasabah</span>
+    </button>
     <div class="nav-links">
       <button class="nav-btn active" data-page="reflect" onclick="showPage('reflect')">Reflect</button>
-      <button class="nav-btn" data-page="settings" onclick="showPage('settings')">About</button>
+      <button class="nav-btn" data-page="settings" onclick="showPage('settings')">Settings</button>
     </div>
   </nav>
 
@@ -66,22 +78,22 @@
     </div>
   </main>
 
-  <!-- Settings / About Page -->
+  <!-- Settings Page -->
   <main id="page-settings" class="page">
     <div class="page-inner settings-inner">
       <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
 
-      <h1 class="settings-title">About Qalb</h1>
+      <h1 class="settings-title">About Muhasabah</h1>
 
       <div class="about-card">
         <p>
-          <em>Qalb</em> (قلب) means <em>heart</em> in Arabic — the seat of intention,
-          feeling, and consciousness in the Islamic tradition.
+          <em>Muhasabah</em> (محاسبة) is the Islamic practice of daily
+          self-reckoning — an honest accounting of the heart between you and your Lord.
         </p>
         <p>
-          This space is a quiet corner for your daily <em>murāqabah</em> — a moment
-          of gentle self-observation and remembrance. Each day a new prompt invites
-          you to write honestly: about your intentions, your gratitude, your struggles,
+          This space is a quiet corner for <em>murāqabah</em> — gentle
+          self-observation and remembrance. Each day a prompt invites you to write
+          honestly: about your intentions, your gratitude, your struggles,
           and your hopes.
         </p>
         <p>
@@ -89,9 +101,26 @@
           and your Lord.
         </p>
         <p class="hadith-quote">
-          "Verily, actions are by intentions."
-          <span class="hadith-ref">— Sahih al-Bukhari</span>
+          "Call yourself to account before you are called to account."
+          <span class="hadith-ref">— Umar ibn al-Khattab (ra)</span>
         </p>
+      </div>
+
+      <!-- Appearance / theme -->
+      <div class="settings-section">
+        <h2 class="settings-section-title">Appearance</h2>
+        <p class="settings-note">Choose how Muhasabah looks on your device.</p>
+        <div class="theme-picker" id="theme-picker">
+          <button class="theme-btn" data-theme-opt="light" onclick="setTheme('light')">
+            <span class="theme-icon">☀</span> Light
+          </button>
+          <button class="theme-btn" data-theme-opt="dark" onclick="setTheme('dark')">
+            <span class="theme-icon">☽</span> Dark
+          </button>
+          <button class="theme-btn" data-theme-opt="device" onclick="setTheme('device')">
+            <span class="theme-icon">◑</span> Device
+          </button>
+        </div>
       </div>
 
       <div class="settings-section">
